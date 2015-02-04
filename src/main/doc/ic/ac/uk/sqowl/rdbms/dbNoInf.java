@@ -26,10 +26,13 @@ public class dbNoInf {
     public static void main(String[] args){
 
 	// connect to and setup database
-        setupDB();
+	try{
+	    setupDB();
+	}
+	catch (java.sql.SQLException e){
+	    System.out.println("sqowl");
+	}	
 	
-	
-	System.out.println("sqowl");
     }
 
    
@@ -65,7 +68,7 @@ public class dbNoInf {
 
         dbConnection dbCon = new dbConnection(url, user, password, driver);
 
-        // connect to the account
+        /*// connect to the account
         dbCon.connectDb();
 
         // first set up the database lubm
@@ -81,7 +84,7 @@ public class dbNoInf {
         dbCon.setDBUsed(dbUsed);
 
         // clean the database, drop only views
-        dbCon.dropAllViews();
+        dbCon.dropAllViews();*/
 
         System.out.println("Done!");
     }
