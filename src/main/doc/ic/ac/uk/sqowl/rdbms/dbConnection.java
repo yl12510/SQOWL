@@ -1,4 +1,4 @@
-package main;
+package package src.main.doc.ic.ac.uk.sqowl.rdbms;
 
 import java.sql.*;
 
