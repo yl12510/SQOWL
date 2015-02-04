@@ -1,5 +1,9 @@
 package src.main.doc.ic.ac.uk.sqowl.rdbms;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 public class dbNoInf {
 
     // set which rdbms will be used (sqlserver as default)
