@@ -1,0 +1,22 @@
+CLASSPATH := .:lib/msbase.jar:lib/mssqlserver.jar:lib/msutil.jar
+#DEBUG := 0
+#DBUSER := yl12510
+#DBPASSWD := 6tszYXAaEt
+#DBDRIVER := org.postgresql.Driver
+#DBURL := jdbc:postgresql://db.doc.ic.ac.uk/
+
+dbNoInf : src/main/doc/ic/ac/uk/sqowl/rdbms/dbNoInf.class
+	java -cp ${CLASSPATH} src.main.doc.ic.ac.uk.sqowl.rdbms.dbNoInf
+#-ontology lubm \
+#-debug ${DEBUG} \
+#-user ${DBUSER} \
+#-password ${DBPASSWD} \
+#-driver ${DBDRIVER} \
+#-url ${DBURL}yl12510 \
+#-nofks \
+#-local_names \
+#-print
+
+src/main/doc/ic/ac/uk/sqowl/rdbms/dbNoInf.class : src/main/doc/ic/ac/uk/sqowl/rdbms/dbNoInf.java
+	javac -cp ${CLASSPATH} src/main/doc/ic/ac/uk/sqowl/rdbms/dbNoInf.java
+
