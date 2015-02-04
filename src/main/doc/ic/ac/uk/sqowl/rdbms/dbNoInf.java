@@ -32,8 +32,8 @@ public class dbNoInf {
 	System.out.println("sqowl");
     }
 
-    public static void setupDB(){
-	    // connect to and setup database
+   
+    // connect to and setup database
     private static void setupDB() throws SQLException {
 
         System.out.print("Step1: Database connecting......");
@@ -84,7 +84,5 @@ public class dbNoInf {
         dbCon.dropAllViews();
 
         System.out.println("Done!");
-    }
-
     }
 }
