@@ -1,4 +1,4 @@
-package doc.ic.ac.uk.sqowl.rdbms;
+package src.main.doc.ic.ac.uk.sqowl.rdbms;
 
 public class dbNoInf {
   public static void main(String[] args){
