@@ -48,7 +48,7 @@ public class dbNoInf {
             //url="jdbc:microsoft:sqlserver://localhost:1434";
             //url="jdbc:microsoft:sqlserver://db-ms.doc.ic.ac.uk:1433";
             //url="jdbc:microsoft:sqlserver://sqlserver.doc.ic.ac.uk:1433";
-            url="jdbc:microsoft:sqlserver://magpie.doc.ic.ac.uk:1433";
+            url="jdbc:microsoft:sqlserver://kamet.doc.ic.ac.uk:1433";
             driver="com.microsoft.jdbc.sqlserver.SQLServerDriver";
             //password="UctId6Der";
             //user="yl12510_u";
@@ -72,19 +72,19 @@ public class dbNoInf {
         dbCon.connectDb();
 
         // first set up the database lubm
-        String dbUsed = "lubm";
-        dbCon.setDBUsed(dbUsed);
+        //String dbUsed = "lubm";
+        //dbCon.setDBUsed(dbUsed);
 
         // clean the database, drop tables, views, functions, constraints
-        dbCon.setupDB(dbSchema);
+        //dbCon.setupDB(dbSchema);
 
 
         // second, set up the database yu
-        dbUsed = "Yu";
-        dbCon.setDBUsed(dbUsed);
+        //dbUsed = "Yu";
+        //dbCon.setDBUsed(dbUsed);
 
         // clean the database, drop only views
-        dbCon.dropAllViews();*/
+        //dbCon.dropAllViews();*/
 
         System.out.println("Done!");
     }
