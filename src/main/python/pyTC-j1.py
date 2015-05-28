@@ -107,6 +107,8 @@ if __name__ == "__main__":
         nextCount = tc.count()
         if nextCount == oldCount:
             break
+        if iteration >= 2:
+            break
 
     loop_end = datetime.now()    
     print "******* Loop End ********"
