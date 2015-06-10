@@ -20,6 +20,7 @@ import os.path
 
 from random import Random
 from pyspark import SparkContext
+from pyspark import StorageLevel
 from datetime import datetime
 
 
@@ -57,13 +58,21 @@ if __name__ == "__main__":
         print 'File does not exist.'
     else:
         lines = sc.textFile(orgFile)
-        tc = lines.map(lambda x: (x.split(",")[0], x.split(",")[1])).distinct().cache()
+        tc = lines.map(lambda x: (x.split(",")[0], x.split(",")[1])).distinct()
+	
+        
+        #print "the default partition number for org tc is %i" % tc.getNumPartitions()
+
+#        if tc.getNumPartitions() > partitions:
+#            tc = tc.coalesce(partitions).persist(StorageLevel.MEMORY_AND_DISK_SER)
+#        else: 
+        tc.persist(StorageLevel.MEMORY_AND_DISK_SER)
         
 
         
-    #print "The original transitive graph loaded from " + orgFile + " is: "
-    #for line in tc.collect():
-    #    print line
+#    print "The original transitive graph loaded from " + orgFile + " is: "
+#    for line in tc.collect():
+#        print line
 
     
             
@@ -90,6 +99,10 @@ if __name__ == "__main__":
     # Because join() joins on keys, the edges are stored in reversed order.
     edges = tc.map(lambda (x, y): (y, x))
 
+    print "the default partition number for edges is %i" % edges.getNumPartitions()
+    #edges.persist(StorageLevel.MEMORY_AND_DISK_SER)
+
+
     print "******* Loop Start ********"
     loop_start = datetime.now()
     
@@ -102,11 +115,35 @@ if __name__ == "__main__":
         oldCount = nextCount
         # Perform the join, obtaining an RDD of (y, (z, x)) pairs,
         # then project the result to obtain the new (x, z) paths.
-        new_edges = tc.join(edges).map(lambda (_, (a, b)): (b, a))
-        tc = tc.union(new_edges).distinct().cache()
+        new_edges = tc.join(edges).partitionBy(1).map(lambda (_, (a, b)): (b, a))
+        
+        #new_edges = new_edges.coalesce(1)
+
+        print "partition number for new_edges in iteration %i is %i" % (iteration,new_edges.getNumPartitions()) 
+
+        tc = tc.union(new_edges)
+        
+        print "partition number for tc after union in iteration %i is %i" % (iteration,tc.getNumPartitions())
+        
+        tc = tc.distinct()
+
+        # repartition the rdd when the partition goes too big
+        print "partition number for tc after distinct in iteration %i is %i" % (iteration,tc.getNumPartitions())
+        
+        #if tc.getNumPartitions() > partitions:
+        #tc = tc.coalesce(partitions).persist(StorageLevel.MEMORY_AND_DISK_SER)
+        #else: 
+        tc.persist(StorageLevel.MEMORY_AND_DISK_SER)
+
         nextCount = tc.count()
+
+        print "partition number for tc after count in iteration %i is %i" % (iteration,tc.getNumPartitions())
+        
         if nextCount == oldCount:
             break
+            
+        if iteration >= 10: 
+            break 
 
     loop_end = datetime.now()    
     print "******* Loop End ********"
@@ -116,9 +153,9 @@ if __name__ == "__main__":
 
     #tcFile = open(newFile,'w')
     
-    #print "The transitive closure generated is: "
-    #for line in tc.sortByKey().collect():
-    #    print line
+ #   print "The transitive closure generated is: "
+ #   for line in tc.sortByKey().collect():
+ #       print line
         #tcFile.write(line + "\n")
 
     #tcFile.close()
